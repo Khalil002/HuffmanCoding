@@ -38,9 +38,7 @@ class HuffmanDecompressor:
 			
 			#Load the reverse_mapping
 			n = int.from_bytes(input_file.read(4), byteorder=sys.byteorder)
-			reverse_mapping_bytes = b''
-			for i in range(n):
-				reverse_mapping_bytes += input_file.read(1)
+			reverse_mapping_bytes = input_file.read(n)
 			self.reverse_mapping = pickle.loads(reverse_mapping_bytes)
 
 			bit_string = ""
