@@ -67,11 +67,11 @@ class HuffmanDecompressor:
 input_path = sys.argv[1]
 output_path = "descomprimido-elmejorprofesor.txt"
 
-hc = HuffmanDecompressor(input_path, output_path)
+hd = HuffmanDecompressor(input_path, output_path)
 #hc.load_reverse_mapping()
 
 st = time.time()
-hc.decompress()
+hd.decompress()
 et = time.time()
 ft = et-st
 print("Tiempo de descompresión en ms: "+str(ft))
