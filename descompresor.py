@@ -37,7 +37,7 @@ class HuffmanDecompressor:
 
 		with open(self.input_path, 'rb') as input_file, open(self.output_path, 'w') as output_file:
 
-			n = int.from_bytes(input_file.read(2), byteorder=sys.byteorder)
+			n = int.from_bytes(input_file.read(4), byteorder=sys.byteorder)
 			reverse_mapping_bytes = b''
 			for i in range(n):
 				reverse_mapping_bytes += input_file.read(1)
@@ -74,4 +74,4 @@ st = time.time()
 hd.decompress()
 et = time.time()
 ft = et-st
-print("Tiempo de descompresión en ms: "+str(ft))
+print("Tiempo de descompresión: "+str(ft)+" segundos")
