@@ -53,7 +53,6 @@ class HuffmanCompressor:
 
 			heapq.heappush(self.heap, merged)
 
-
 	def create_codes_helper(self, root, current_code):
 		if(root == None):
 			return
@@ -66,19 +65,16 @@ class HuffmanCompressor:
 		self.create_codes_helper(root.left, current_code + "0")
 		self.create_codes_helper(root.right, current_code + "1")
 
-
 	def create_codes(self):
 		root = heapq.heappop(self.heap)
 		current_code = ""
 		self.create_codes_helper(root, current_code)
-
 
 	def get_encoded_text(self, text):
 		encoded_text = ""
 		for character in text:
 			encoded_text += self.codes[character]
 		return encoded_text
-
 
 	def pad_encoded_text(self, encoded_text):
 		extra_padding = 8 - len(encoded_text) % 8
@@ -88,7 +84,6 @@ class HuffmanCompressor:
 		padded_info = "{0:08b}".format(extra_padding)
 		encoded_text = padded_info + encoded_text
 		return encoded_text
-
 
 	def get_byte_array(self, padded_encoded_text):
 		if(len(padded_encoded_text) % 8 != 0):
@@ -100,7 +95,6 @@ class HuffmanCompressor:
 			byte = padded_encoded_text[i:i+8]
 			b.append(int(byte, 2))
 		return b
-
 
 	def compress(self):
 		with open(self.input_path, 'r+') as input_file, open(self.output_path, 'wb') as output_file:
@@ -120,8 +114,13 @@ class HuffmanCompressor:
 			print(b3)
 			b4 = b3.to_bytes(4, sys.byteorder)
 			
+			#writes the pickled reverse_mapping length
 			output_file.write(b4)
+
+			#writes the pickled reverse_mapping
 			output_file.write(b2)
+
+			#writes the compressed file
 			output_file.write(bytes(b))
 	
 	#def save_reverse_mapping(self):

@@ -36,7 +36,8 @@ class HuffmanDecompressor:
 	def decompress(self):
 
 		with open(self.input_path, 'rb') as input_file, open(self.output_path, 'w') as output_file:
-
+			
+			#Load the reverse_mapping
 			n = int.from_bytes(input_file.read(4), byteorder=sys.byteorder)
 			reverse_mapping_bytes = b''
 			for i in range(n):
@@ -45,6 +46,7 @@ class HuffmanDecompressor:
 
 			bit_string = ""
 
+			#Load the compressed file
 			byte = input_file.read(1)
 			while(len(byte) > 0):
 				byte = ord(byte)
