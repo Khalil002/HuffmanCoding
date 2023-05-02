@@ -117,7 +117,7 @@ class HuffmanCompressor:
 			b = self.get_byte_array(padded_encoded_text)
 			b2 = pickle.dumps(self.reverse_mapping)
 			b3 = len(b2)
-
+			print(b3)
 			b4 = b3.to_bytes(4, sys.byteorder)
 			
 			output_file.write(b4)
@@ -142,7 +142,7 @@ print("Tiempo de compresión: "+str(ft)+" segundos")
 input_size = os.path.getsize(input_path)
 output_size = os.path.getsize(output_path)
 compression_ratio = output_size/input_size*100
-print("Compression ratio: "+str(compression_ratio)+"%")
+print("Índice de compresión: "+str(compression_ratio)+"%")
 
 #hc.save_reverse_mapping()
 
