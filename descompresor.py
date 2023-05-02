@@ -68,7 +68,7 @@ input_path = sys.argv[1]
 output_path = "descomprimido-elmejorprofesor.txt"
 
 hd = HuffmanDecompressor(input_path, output_path)
-#hc.load_reverse_mapping()
+#hd.load_reverse_mapping()
 
 st = time.time()
 hd.decompress()
