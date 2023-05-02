@@ -8,8 +8,6 @@ class HuffmanDecompressor:
 	def __init__(self, input_path, output_path):
 		self.input_path = input_path
 		self.output_path = output_path
-		self.heap = []
-		self.codes = {}
 		self.reverse_mapping = {}
 
 	def remove_padding(self, padded_encoded_text):
