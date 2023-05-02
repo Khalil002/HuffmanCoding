@@ -1,3 +1,4 @@
+import os
 import sys
 import time
 import pickle
@@ -64,16 +65,22 @@ class HuffmanDecompressor:
 	#	with open('reverse_mapping', 'rb') as reverse_mapping_file:
 	#		self.reverse_mapping = pickle.load(reverse_mapping_file)
 	
-	
+def main():
+	input_path = "comprimido.elmejorprofesor"
+	output_path = "descomprimido-elmejorprofesor.txt"
 
-input_path = sys.argv[1]
-output_path = "descomprimido-elmejorprofesor.txt"
+	if(os.path.isfile(input_path) == False):
+		print(input_path+" does not exist")
+		exit(0)
+	hd = HuffmanDecompressor(input_path, output_path)
+	#hd.load_reverse_mapping()
 
-hd = HuffmanDecompressor(input_path, output_path)
-#hd.load_reverse_mapping()
+	st = time.time()
+	hd.decompress()
+	et = time.time()
+	ft = et-st
+	print("Tiempo de descompresión: "+str(ft)+" segundos")
 
-st = time.time()
-hd.decompress()
-et = time.time()
-ft = et-st
-print("Tiempo de descompresión: "+str(ft)+" segundos")
+
+if __name__ == "__main__":
+    main()

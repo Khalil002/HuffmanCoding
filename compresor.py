@@ -111,7 +111,6 @@ class HuffmanCompressor:
 			b = self.get_byte_array(padded_encoded_text)
 			b2 = pickle.dumps(self.reverse_mapping)
 			b3 = len(b2)
-			print(b3)
 			b4 = b3.to_bytes(4, sys.byteorder)
 			
 			#writes the pickled reverse_mapping length
@@ -127,22 +126,26 @@ class HuffmanCompressor:
 	#	with open('reverse_mapping', 'wb') as reverse_mapping_file:
 	#		pickle.dump(self.reverse_mapping, reverse_mapping_file)
 
-input_path = sys.argv[1]
-output_path = "comprimido.elmejorprofesor"
+def main():
+	input_path = sys.argv[1]
+	output_path = "comprimido.elmejorprofesor"
+	if(os.path.isfile(input_path) == False):
+		print(input_path+" does not exist")
+		exit(0)
+	hc = HuffmanCompressor(input_path, output_path)
 
-hc = HuffmanCompressor(input_path, output_path)
+	st = time.time()
+	hc.compress()
+	et = time.time()
+	ft = et-st
+	print("Tiempo de compresión: "+str(ft)+" segundos")
 
-st = time.time()
-hc.compress()
-et = time.time()
-ft = et-st
-print("Tiempo de compresión: "+str(ft)+" segundos")
+	input_size = os.path.getsize(input_path)
+	output_size = os.path.getsize(output_path)
+	compression_ratio = output_size/input_size*100
+	print("Índice de compresión: "+str(compression_ratio)+"%")
 
-input_size = os.path.getsize(input_path)
-output_size = os.path.getsize(output_path)
-compression_ratio = output_size/input_size*100
-print("Índice de compresión: "+str(compression_ratio)+"%")
+	#hc.save_reverse_mapping()
 
-#hc.save_reverse_mapping()
-
-
+if __name__ == "__main__":
+    main()

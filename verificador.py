@@ -8,13 +8,16 @@ def main():
     
     if os.path.exists(f1) == False:
         print(f1+" does not exist")
+        exit(0)
     elif os.path.exists(f2) == False:
         print(f2+" does not exist")
+        exit(0)
+        
+    if filecmp.cmp(f1, f2):
+        print("ok")
     else:
-        if filecmp.cmp(f1, f2):
-            print("ok")
-        else:
-            print("nok")
+        print("nok")
+        
     
 if __name__ == "__main__":
     main()
