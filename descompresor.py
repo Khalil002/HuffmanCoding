@@ -21,21 +21,32 @@ class HuffmanDecompressor:
 
 	def decode_text(self, encoded_text):
 		current_code = ""
-		decoded_text = ""
+		decoded_bytes = b''
 
+		print(len(encoded_text))
 		for bit in encoded_text:
 			current_code += bit
 			if(current_code in self.reverse_mapping):
 				character = self.reverse_mapping[current_code]
-				decoded_text += character
+				decoded_bytes += character
 				current_code = ""
 
-		return decoded_text
+		return decoded_bytes
 
 	def decompress(self):
 
-		with open(self.input_path, 'rb') as input_file, open(self.output_path, 'w') as output_file:
+		output_file_extension = ""
+		decompressed_text = ""
+
+		
+
+		with open(self.input_path, 'rb') as input_file, open(self.output_path, 'wb') as output_file:
 			
+			#Load the reverse_mapping
+			n = int.from_bytes(input_file.read(4), byteorder=sys.byteorder)
+			output_file_extension_as_bytes = input_file.read(n)
+			output_file_extension = output_file_extension_as_bytes.decode()
+
 			#Load the reverse_mapping
 			n = int.from_bytes(input_file.read(4), byteorder=sys.byteorder)
 			reverse_mapping_bytes = input_file.read(n)
@@ -54,7 +65,8 @@ class HuffmanDecompressor:
 			encoded_text = self.remove_padding(bit_string)
 
 			decompressed_text = self.decode_text(encoded_text)
-			
+		
+		with open(self.output_path+output_file_extension, 'wb') as output_file:
 			output_file.write(decompressed_text)
 	
 	#def load_reverse_mapping(self):
@@ -63,7 +75,7 @@ class HuffmanDecompressor:
 	
 def main():
 	input_path = "comprimido.elmejorprofesor"
-	output_path = "descomprimido-elmejorprofesor.txt"
+	output_path = "descomprimido-elmejorprofesor"
 
 	if(os.path.isfile(input_path) == False):
 		print(input_path+" does not exist")

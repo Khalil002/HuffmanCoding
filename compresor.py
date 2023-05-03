@@ -29,12 +29,12 @@ class HuffmanCompressor:
 				return False
 			return self.freq == other.freq
 
-	def create_freq_table(self, text):
+	def create_freq_table(self, data):
 		freq_table = {}
-		for character in text:
-			if not character in freq_table:
-				freq_table[character] = 0
-			freq_table[character] += 1
+		for symbol in data:
+			if not symbol in freq_table:
+				freq_table[symbol] = 0
+			freq_table[symbol] += 1
 		return freq_table
 
 	def create_heap(self, freq_table):
@@ -96,23 +96,34 @@ class HuffmanCompressor:
 			b.append(int(byte, 2))
 		return b
 
-	def compress(self):
-		with open(self.input_path, 'r+') as input_file, open(self.output_path, 'wb') as output_file:
-			text = input_file.read()
+	def compress(self, input_file_extension):
+		with open(self.input_path, 'rb') as input_file, open(self.output_path, 'wb') as output_file:
+			data_bytes = input_file.read()
+			data = [data_bytes[i:i+1] for i in range(len(data_bytes))]
 
-			freq_table = self.create_freq_table(text)
+			#print(data)
+			freq_table = self.create_freq_table(data)
 			self.create_heap(freq_table)
 			self.merge_nodes()
 			self.create_codes()
 
-			encoded_text = self.get_encoded_text(text)
+			encoded_text = self.get_encoded_text(data)
 			padded_encoded_text = self.pad_encoded_text(encoded_text)
 
 			b = self.get_byte_array(padded_encoded_text)
 			b2 = pickle.dumps(self.reverse_mapping)
 			b3 = len(b2)
 			b4 = b3.to_bytes(4, sys.byteorder)
+			b5 = str.encode(input_file_extension)
+			b6 = len(b5)
+			b7 = b6.to_bytes(4, sys.byteorder)
 			
+			#writes the file extension length
+			output_file.write(b7)
+
+			#writes the file extension
+			output_file.write(b5)
+
 			#writes the pickled reverse_mapping length
 			output_file.write(b4)
 
@@ -128,6 +139,7 @@ class HuffmanCompressor:
 
 def main():
 	input_path = sys.argv[1]
+	input_filename, input_file_extension = os.path.splitext(input_path)
 	output_path = "comprimido.elmejorprofesor"
 	if(os.path.isfile(input_path) == False):
 		print(input_path+" does not exist")
@@ -135,15 +147,10 @@ def main():
 	hc = HuffmanCompressor(input_path, output_path)
 
 	st = time.time()
-	hc.compress()
+	hc.compress(input_file_extension)
 	et = time.time()
 	ft = et-st
 	print("Tiempo de compresión: "+str(ft)+" segundos")
-
-	input_size = os.path.getsize(input_path)
-	output_size = os.path.getsize(output_path)
-	compression_ratio = output_size/input_size*100
-	print("Índice de compresión: "+str(compression_ratio)+"%")
 
 	#hc.save_reverse_mapping()
 
